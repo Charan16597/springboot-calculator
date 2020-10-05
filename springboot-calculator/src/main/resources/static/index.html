@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<title>User Page</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	</head>
+
+	<body>
+
+		<center>
+			
+			<h3>EQUATION CALCULATOR</h3>
+
+		</center>
+
+		<br /><br />
+
+		<customform>
+		
+			<label>Enter Equation Here</label>
+			<br /><br />
+			<input type="number" name="number1" id="number1" placeholder="Enter Number 1" required />
+			<br /><br />
+			<input type="radio" name="operator" id="operator" value="+"  checked /> + <br />
+			<input type="radio" name="operator" id="operator" value="-"   /> - <br />
+			<input type="radio" name="operator" id="operator" value="*"   /> * <br />
+			<input type="radio" name="operator" id="operator" value="/"   /> / <br />
+			<br />
+			<input type="number" name="number2" id="number2" placeholder="Enter Number 2" required />
+			<br /><br />
+			<button type="button" onclick="submitForm();">Submit</button>
+			<br />
+		
+		</customform>
+		
+		<br /><br />
+		<h4>Equation History</h4>
+		<span id="equations">
+		
+			<span id="equation0" name="equation0"></span><br /><br />
+			<span id="equation1" name="equation1"></span><br /><br />
+			<span id="equation2" name="equation2"></span><br /><br />
+			<span id="equation3" name="equation3"></span><br /><br />
+			<span id="equation4" name="equation4"></span><br /><br />
+			<span id="equation5" name="equation5"></span><br /><br />
+			<span id="equation6" name="equation6"></span><br /><br />
+			<span id="equation7" name="equation7"></span><br /><br />
+			<span id="equation8" name="equation8"></span><br /><br />
+			<span id="equation9" name="equation9"></span>
+		
+		</span>
+
+		<script>
+			
+			function submitForm() {
+				
+				if ($("#number1").val() != "" && $("#number2").val() != "") {
+					
+					let eq = $("#number1").val() + $("input[name=operator]:checked").val() + $("#number2").val();
+	
+					$.ajax({
+						
+						method: "GET",
+						url: "http://localhost:8080/calculate", 
+						data: {"equation": eq},
+	    				success: function(response) {
+	    					
+	    					update(response, eq);
+	
+	    				}
+	
+	  				});
+				
+				}
+
+			}
+			
+			function update(result, eq) {
+				
+				for (var i = 9; i > 0; i--) {
+					
+					$("#equation" + i).html($("#equation" + (i - 1)).html());
+					
+				}
+				
+				$("#equation0").html(eq + " = " + result);
+				
+			}
+
+		</script>
+
+	</body>
+
+</html>
